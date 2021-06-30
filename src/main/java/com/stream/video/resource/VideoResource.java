@@ -32,7 +32,7 @@ public class VideoResource {
     @Consumes("application/json")
     public Response addVideo(Video emp){
     emp.setName(emp.getName());
-    emp.setAge(emp.getAge());
+    emp.setType(emp.getType());
             
     VideoDAO dao = new VideoDAO();
     dao.addVideo(emp);

@@ -14,7 +14,7 @@ public class Video {
 	  @Column
 	  private String name;
 	  @Column
-	  private int age;
+	  private int type;
 	  
 	  public int getId() {
 	    return id;
@@ -28,10 +28,10 @@ public class Video {
 	  public void setName(String name) {
 	    this.name = name;
 	  }
-	  public int getAge() {
-	    return age;
+	  public int getType() {
+	    return type;
 	  }
-	  public void setAge(int age) {
-	    this.age = age;
+	  public void setType(int type) {
+	    this.type = type;
 	  }
 }

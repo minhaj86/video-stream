@@ -21,7 +21,7 @@ public class VideoDAO {
         Video Video = new Video();
         
         Video.setName(bean.getName());
-        Video.setAge(bean.getAge());
+        Video.setType(bean.getType());
         
         session.save(Video);
       }
@@ -56,7 +56,7 @@ public class VideoDAO {
           Query query = session.createQuery(hql);
           query.setInteger("id",id);
           query.setString("name",emp.getName());
-          query.setInteger("age",emp.getAge());
+          query.setInteger("age",emp.getType());
           int rowCount = query.executeUpdate();
           System.out.println("Rows affected: " + rowCount);
           tx.commit();
