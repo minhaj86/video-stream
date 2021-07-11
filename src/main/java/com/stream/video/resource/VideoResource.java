@@ -20,14 +20,22 @@ public class VideoResource {
 
 	@GET
 	@Produces("application/json")
-	public List<Video> getVideo() {
+	public List<Video> getVideos() {
 		VideoDAO dao = new VideoDAO();
 		List<Video> videos = dao.getVideos();
 		return videos;
 	}
 
+	@GET
+	@Path("/{id}")
+	@Produces("application/json")
+	public Video getVideo(@PathParam("id") int id) {
+		VideoDAO dao = new VideoDAO();
+		Video video = dao.getVideo(id);
+		return video;
+	}
+
 	@POST
-//	@Path("/create")
 	@Consumes("application/json")
 	public Response addVideo(Video bean) {
 		bean.setTitle(bean.getTitle());
@@ -40,9 +48,9 @@ public class VideoResource {
 	@PUT
 	@Path("/{id}")
 	@Consumes("application/json")
-	public Response updateVideo(@PathParam("id") int id, Video emp) {
+	public Response updateVideo(@PathParam("id") int id, Video video) {
 		VideoDAO dao = new VideoDAO();
-		int count = dao.updateVideo(id, emp);
+		int count = dao.updateVideo(id, video);
 		if (count == 0) {
 			return Response.status(Response.Status.BAD_REQUEST).build();
 		}

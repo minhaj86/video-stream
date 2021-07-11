@@ -1,7 +1,9 @@
 package com.stream.video.dao;
 
+import java.io.Serializable;
 import java.util.List;
 
+import org.glassfish.hk2.utilities.reflection.Logger;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -13,15 +15,27 @@ public class VideoDAO {
 		Transaction tx = session.beginTransaction();
 		addVideo(session, bean);
 		tx.commit();
+		Transaction tx1 = session.beginTransaction();
+		addVideoGenres(session, bean);
+		tx1.commit();
 		session.close();
 
+	}
+	
+	private void addVideoGenres(Session session, Video bean) {
+//		bean.getGenres().forEach(genre -> {
+//			genre.setVideo(bean);
+//			session.save(genre);
+//		});
 	}
 
 	private void addVideo(Session session, Video bean) {
 		Video video = new Video();
 		video.setTitle(bean.getTitle());
 		video.setDescription(bean.getDescription());
-		session.save(video);
+		Serializable id = session.save(video);
+		System.out.println(id);
+		System.out.println(video.getId());
 	}
 
 	public List<Video> getVideos() {
@@ -30,6 +44,16 @@ public class VideoDAO {
 		List<Video> Videos = query.list();
 		session.close();
 		return Videos;
+	}
+
+	public Video getVideo(int id) {
+		Session session = SessionUtil.getSession();
+		Query query = session.createQuery("from Video where id = :id");
+		query.setInteger("id", id);
+		Video video = (Video) query.uniqueResult();
+//		List<Video> Videos = query.list();
+		session.close();
+		return video;
 	}
 
 	public int deleteVideo(int id) {
