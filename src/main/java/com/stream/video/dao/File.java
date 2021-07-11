@@ -7,14 +7,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class Video {
+public class File {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	@Column
-	private String title;
+	private String name;
 	@Column
-	private String description;
+	private String directory;
 
 	public int getId() {
 		return id;
@@ -24,20 +24,20 @@ public class Video {
 		this.id = id;
 	}
 
-	public String getTitle() {
-		return title;
+	public String getName() {
+		return name;
 	}
 
-	public void setTitle(String title) {
-		this.title = title;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public String getDescription() {
-		return description;
+	public String getDirectory() {
+		return directory;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
+	public void setDirectory(String directory) {
+		this.directory = directory;
 	}
 
 }

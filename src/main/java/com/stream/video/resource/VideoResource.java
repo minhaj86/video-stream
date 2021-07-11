@@ -18,49 +18,46 @@ import com.stream.video.dao.VideoDAO;
 @Path("/video")
 public class VideoResource {
 
-    @GET
-    @Produces("application/json")
-    public List<Video> getVideo() {
-      VideoDAO dao = new VideoDAO();
-      List Videos = dao.getVideos();
-        return Videos;
-    }
+	@GET
+	@Produces("application/json")
+	public List<Video> getVideo() {
+		VideoDAO dao = new VideoDAO();
+		List<Video> videos = dao.getVideos();
+		return videos;
+	}
 
-    
-    @POST
-    @Path("/create")
-    @Consumes("application/json")
-    public Response addVideo(Video emp){
-    emp.setName(emp.getName());
-    emp.setType(emp.getType());
-            
-    VideoDAO dao = new VideoDAO();
-    dao.addVideo(emp);
-    
-    return Response.ok().build();
-    }
-    
-    @PUT
-    @Path("/update/{id}")
-    @Consumes("application/json")
-    public Response updateVideo(@PathParam("id") int id, Video emp){
-      VideoDAO dao = new VideoDAO();
-    int count = dao.updateVideo(id, emp);
-    if(count==0){
-      return Response.status(Response.Status.BAD_REQUEST).build();
-    }
-    return Response.ok().build();
-    }
-    
-    @DELETE
-    @Path("/delete/{id}")
-    @Consumes("application/json")
-    public Response deleteVideo(@PathParam("id") int id){
-      VideoDAO dao = new VideoDAO();
-    int count = dao.deleteVideo(id);
-    if(count==0){
-      return Response.status(Response.Status.BAD_REQUEST).build();
-    }
-    return Response.ok().build();
-    }
+	@POST
+	@Path("/create")
+	@Consumes("application/json")
+	public Response addVideo(Video bean) {
+		bean.setTitle(bean.getTitle());
+		bean.setDescription(bean.getDescription());
+		VideoDAO dao = new VideoDAO();
+		dao.addVideo(bean);
+		return Response.ok().build();
+	}
+
+	@PUT
+	@Path("/update/{id}")
+	@Consumes("application/json")
+	public Response updateVideo(@PathParam("id") int id, Video emp) {
+		VideoDAO dao = new VideoDAO();
+		int count = dao.updateVideo(id, emp);
+		if (count == 0) {
+			return Response.status(Response.Status.BAD_REQUEST).build();
+		}
+		return Response.ok().build();
+	}
+
+	@DELETE
+	@Path("/delete/{id}")
+	@Consumes("application/json")
+	public Response deleteVideo(@PathParam("id") int id) {
+		VideoDAO dao = new VideoDAO();
+		int count = dao.deleteVideo(id);
+		if (count == 0) {
+			return Response.status(Response.Status.BAD_REQUEST).build();
+		}
+		return Response.ok().build();
+	}
 }
