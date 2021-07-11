@@ -27,7 +27,7 @@ public class VideoResource {
 	}
 
 	@POST
-	@Path("/create")
+//	@Path("/create")
 	@Consumes("application/json")
 	public Response addVideo(Video bean) {
 		bean.setTitle(bean.getTitle());
@@ -38,7 +38,7 @@ public class VideoResource {
 	}
 
 	@PUT
-	@Path("/update/{id}")
+	@Path("/{id}")
 	@Consumes("application/json")
 	public Response updateVideo(@PathParam("id") int id, Video emp) {
 		VideoDAO dao = new VideoDAO();
@@ -50,7 +50,7 @@ public class VideoResource {
 	}
 
 	@DELETE
-	@Path("/delete/{id}")
+	@Path("/{id}")
 	@Consumes("application/json")
 	public Response deleteVideo(@PathParam("id") int id) {
 		VideoDAO dao = new VideoDAO();
