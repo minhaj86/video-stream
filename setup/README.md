@@ -1,14 +1,22 @@
 # Setup Instruction
 
 
-## Run MySQL instance with some default settings
+## Run Database
+
+### Run MySQL instance with some default settings
 
 $ docker run --rm --name videostreamdb -e MYSQL_ROOT_PASSWORD=password -e MYSQL_DATABASE=videodb -p 3306:3306 -d mysql
 
 
-## Compile and Run the app by linking with db
+## Compile and Run the app
 
-$ docker run -it --rm --name videostream --link videostreamdb:dbserver -p 8081:8081 -v "$(pwd)":/usr/src/videostream -w /usr/src/videostream maven:3.3-jdk-8 mvn clean compile exec:java
+### Create a volume for maven repo
+
+$ docker volume create --name maven-repo
+
+### Compile and run using maven container by linking with db
+
+$ docker run -it --rm --name videostream --link videostreamdb:dbserver -p 8081:8081 -v maven-repo:/root/.m2 -v "$(pwd)":/usr/src/videostream -w /usr/src/videostream maven:3.3-jdk-8 mvn clean compile exec:java
 
 
 
