@@ -1,5 +1,8 @@
 package com.stream.video.dao;
 
+import java.io.IOException;
+import java.io.StringWriter;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -9,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import com.fasterxml.jackson.core.*;
 
 @Entity
 public class Video {
@@ -55,5 +59,42 @@ public class Video {
 		this.genres = genres;
 	}
 
+	@Override
+	public String toString() {
+		JsonFactory factory = new JsonFactory();
+		StringWriter jsonObjectWriter = new StringWriter();
+		try {
+			JsonGenerator generator = factory.createGenerator(jsonObjectWriter);
+			generator.useDefaultPrettyPrinter();
+			generator.writeStartObject();
+			generator.writeFieldName("id");
+			generator.writeString(Integer.toString(id));
+			generator.writeFieldName("title");
+			generator.writeString(this.title);
+			generator.writeFieldName("description");
+			generator.writeString(this.description);
 
+			generator.writeFieldName("genres");
+			generator.writeStartArray();
+			this.genres.forEach(x -> {
+				try {
+					generator.writeStartObject();
+					generator.writeFieldName("id");
+					generator.writeString(Integer.toString(x.getId()));
+					generator.writeFieldName("title");
+					generator.writeString(x.getTitle());
+					generator.writeEndObject();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			});
+			generator.writeEndArray();
+
+			generator.writeEndObject();
+			generator.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return jsonObjectWriter.toString();
+	}
 }

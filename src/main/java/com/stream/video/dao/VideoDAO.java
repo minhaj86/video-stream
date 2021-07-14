@@ -2,9 +2,9 @@ package com.stream.video.dao;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
-//import org.glassfish.hk2.utilities.reflection.Logger;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -34,7 +34,7 @@ public class VideoDAO {
 			session.save(genre);
 		});
 	}
-
+	
 	private void addVideo(Session session, Video bean) {
 		Serializable id = session.save(bean);
 		log("Added video with ID="+id);
@@ -42,11 +42,18 @@ public class VideoDAO {
 	}
 
 	public List<Video> getVideos() {
+		log("Videos JSON: ");
 		Session session = SessionUtil.getSession();
 		Query query = session.createQuery("from Video");
-		List<Video> Videos = query.list();
+		List<Video> videos = null ;
+		try {
+			videos = query.list();
+			log("Videos JSON: " + Utils.convertEntityListToJson(videos));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		session.close();
-		return Videos;
+		return videos;
 	}
 
 	public Video getVideo(int id) {
@@ -54,8 +61,16 @@ public class VideoDAO {
 		Query query = session.createQuery("from Video where id = :id");
 		query.setInteger("id", id);
 		Video video = (Video) query.uniqueResult();
+		log(video.toString());
 		session.close();
 		return video;
+	}
+
+	private Set<VideoGenre> getVideoGenres(Session session, int videoId) {
+		Query query = session.createQuery("from VideoGenre where video_id = :id");
+		query.setInteger("id", videoId);
+		List<VideoGenre> videoGenres = query.list();
+		return (Set<VideoGenre>) videoGenres;
 	}
 
 	public int deleteVideo(int id) {
