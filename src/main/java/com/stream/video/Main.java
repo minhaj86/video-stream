@@ -9,7 +9,7 @@ import java.net.URI;
 
 public class Main {
 
-	public static final String BASE_URI = "http://localhost:8081/api/";
+	public static final String BASE_URI = "http://0.0.0.0:8081/api/";
 
 	public static HttpServer startServer() {
 		final ResourceConfig rc = new ResourceConfig().packages("com.stream.video.resource");

@@ -1,15 +1,26 @@
+# Setup Instruction
+
+
+## Run MySQL instance with some default settings
+
+$ docker run --rm --name videostreamdb -e MYSQL_ROOT_PASSWORD=password -e MYSQL_DATABASE=videodb -p 3306:3306 -d mysql
+
+
+## Compile and Run the app by linking with db
+
+$ docker run -it --rm --name videostream --link videostreamdb:dbserver -p 8081:8081 -v "$(pwd)":/usr/src/videostream -w /usr/src/videostream maven:3.3-jdk-8 mvn clean compile exec:java
 
 
 
-$ docker run --rm --name damdbhost -e MYSQL_ROOT_PASSWORD=password -e MYSQL_DATABASE=damdb -p 3306:3306 -d mysql
 
-$ docker run --rm --link damdbhost:db -p 9090:8080 -d adminer
+# Optional
 
+## Run below container to manage database instance 
 
-CREATE TABLE Video ( 
-id int(11) NOT NULL AUTO_INCREMENT, 
-title varchar(255) NOT NULL, 
-description varchar(1000) DEFAULT NULL, PRIMARY KEY (id) )
+$ docker run --rm --link videostreamdb:db -p 9090:8080 -d adminer
 
 
-$ docker run --rm --link damdbhost:dbserver -p 8080:8080 -v /home/mrl/eclipse-workspace/temp_folder:/usr/local/tomcat/webapps tomcat:9.0
+## To deploy the app as WAR in Tomcat
+
+$ docker run --rm --link videostreamdb:dbserver -p 8080:8080 -v "$(pwd)":/usr/local/tomcat/webapps tomcat:9.0
+
