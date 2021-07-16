@@ -10,13 +10,16 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 public class VideoDAO {
+	
 	static Logger logger = null;
+
 	private void log(String msg) {
 		if(VideoDAO.logger == null) {
 			 VideoDAO.logger = Logger.getLogger(VideoDAO.class.getName());
 		}
 		VideoDAO.logger.info(msg);
 	}
+	
 	public void addVideo(Video bean) {
 		Session session = SessionUtil.getSession();
 		Transaction tx = session.beginTransaction();

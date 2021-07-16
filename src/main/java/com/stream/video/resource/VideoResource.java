@@ -1,6 +1,7 @@
 package com.stream.video.resource;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -15,9 +16,10 @@ import javax.ws.rs.core.Response;
 
 import org.apache.log4j.Logger;
 
-import com.stream.video.dao.Utils;
 import com.stream.video.dao.Video;
 import com.stream.video.dao.VideoDAO;
+import com.stream.video.payload.GenrePayload;
+import com.stream.video.payload.VideoPayload;
 
 @Path("/video")
 public class VideoResource {
@@ -31,19 +33,28 @@ public class VideoResource {
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public String getVideos() {
+	public List<Video> getVideos() {
 		VideoDAO dao = new VideoDAO();
 		List<Video> videos = dao.getVideos();
-		return Utils.convertEntityListToJson(videos);
+		return videos.stream().map(x-> new Video(x)).collect(Collectors.toList());
+//		return Utils.convertEntityListToJson(videos);
 	}
 
 	@GET
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public String getVideo(@PathParam("id") int id) {
+	public VideoPayload getVideo(@PathParam("id") int id) {
 		VideoDAO dao = new VideoDAO();
-		Video video = dao.getVideo(id);
-		return video.toString();
+		Video videoH = dao.getVideo(id);
+		VideoPayload vPayload = new VideoPayload();
+		vPayload.setId(videoH.getId());
+		vPayload.setTitle(videoH.getTitle());
+		vPayload.setDescription(videoH.getDescription());
+		videoH.getGenres().forEach(x-> {
+			GenrePayload gPayload = new GenrePayload(x.getTitle());
+			vPayload.addTemp(gPayload);
+		});
+		return vPayload;
 	}
 
 	@POST
@@ -78,5 +89,18 @@ public class VideoResource {
 			return Response.status(Response.Status.BAD_REQUEST).build();
 		}
 		return Response.ok().build();
+	}
+
+	@POST
+	@Path("/create")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public VideoPayload addNewPayload(VideoPayload bean) {
+		log("==============================VideoPayload==============================");
+		log(""+bean.getId());
+		log(bean.getTitle());
+		log(bean.getDescription());
+		bean.addTemp(new GenrePayload("action"));
+		return bean;
 	}
 }

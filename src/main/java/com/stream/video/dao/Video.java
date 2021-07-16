@@ -19,13 +19,28 @@ public class Video {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
+	
 	@Column
 	private String title;
+	
 	@Column
 	private String description;
-    @OneToMany(mappedBy="video",cascade=CascadeType.ALL)
-    private Set<VideoGenre> genres;
+    
+	@OneToMany(mappedBy="video",cascade=CascadeType.ALL)
+    private List<VideoGenre> genres;
 
+	public Video() {
+	}
+
+	public Video(Video v) {
+		this.id=v.id;
+		this.title=v.title;
+		this.description=v.description;
+		v.getGenres().forEach(x-> {
+			VideoGenre t = new VideoGenre(x);
+			this.getGenres().add(t);
+		});
+	}
 	
 	public int getId() {
 		return id;
@@ -51,11 +66,11 @@ public class Video {
 		this.description = description;
 	}
 
-	public Set<VideoGenre> getGenres() {
+	public List<VideoGenre> getGenres() {
 		return genres;
 	}
 
-	public void setGenres(Set<VideoGenre> genres) {
+	public void setGenres(List<VideoGenre> genres) {
 		this.genres = genres;
 	}
 

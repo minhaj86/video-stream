@@ -13,6 +13,19 @@ import javax.persistence.ForeignKey;
 
 @Entity
 public class VideoGenre {
+	public VideoGenre() {
+		
+	}
+	public VideoGenre(VideoGenre v) {
+		this.id = v.id;
+		this.title = v.title;
+//		this.video = v.video;
+	}
+	public VideoGenre(VideoGenre vg, Video v) {
+		this.id = vg.id;
+		this.title = vg.title;
+		this.video = v;
+	}
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;

@@ -16,8 +16,7 @@ $ docker volume create --name maven-repo
 
 ### Compile and run using maven container by linking with db
 
-$ docker run -it --rm --name videostream --link videostreamdb:dbserver -p 8081:8081 -v maven-repo:/root/.m2 -v "$(pwd)":/usr/src/videostream -w /usr/src/videostream maven:3.3-jdk-8 mvn clean compile exec:java
-
+$ docker run -it --rm   --name videostream --link videostreamdb:dbserver -p 8081:8081 -v ~/.m2:/var/maven/.m2 -u 1000 -e MAVEN_CONFIG=/var/maven/.m2 -v "$(pwd)":/usr/src/videostream -w /usr/src/videostream maven:3.8-jdk-11 mvn -Duser.home=/var/maven clean compile exec:java
 
 
 

@@ -9,11 +9,14 @@ import javax.persistence.OneToOne;
 
 @Entity
 public class Genre {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
+	
 	@Column
 	private String name;
+	
 	@Column
 	private String description;
 
